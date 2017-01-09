@@ -14,13 +14,13 @@ import http_tornado_utils
 #----------------------------------------------
 #this is what handles the actuall HTTP request
 def request_wrapper(p_handler_adt,          #:Handler_adt
-			p_tornado_handler_self, #:tornado.web.RequestHandler
-			p_req_type,             #:String - "GET"|"POST"
-			p_sys_args_map,
+		p_tornado_handler_self, #:tornado.web.RequestHandler
+		p_req_type,             #:String - "GET"|"POST"
+		p_sys_args_map,
 
-			p_db_context_map,
-			p_log_fun,
-			p_allow_cross_domain_use_bool = True):
+		p_db_context_map,
+		p_log_fun,
+		p_allow_cross_domain_use_bool = True):
 	p_log_fun('FUN_ENTER','http_tornado_req_handler.request_wrapper()')
 	p_log_fun('INFO'     ,'request uri:%s'%(p_tornado_handler_self.request.uri))
 	
@@ -30,7 +30,7 @@ def request_wrapper(p_handler_adt,          #:Handler_adt
 	
 	try:
 		encoding_type_str = get_encoding(p_tornado_handler_self,
-									p_log_fun)
+					p_log_fun)
 	except Exception as e:
 		#-----------------------
 		#ERROR HANDLING
@@ -42,12 +42,12 @@ def request_wrapper(p_handler_adt,          #:Handler_adt
 		p_log_fun('INFO','request_supplied_encoding_str:%s'%(request_supplied_encoding_str))
 
 		http_tornado_utils.tornado_handle_exception(e,                #p_exception,                         
-									error_msg_str,                    #p_formated_msg_str,
-									(request_supplied_encoding_str,), #p_surrounding_context_attribs_tpl,
-									error_user_msg,                   #p_extern_user_msg,
-									(request_supplied_encoding_str,), #p_surrounding_context_attribs_tpl,
-									p_tornado_handler_self,           #p_req_hndlr_self,
-									p_log_fun)
+					error_msg_str,                    #p_formated_msg_str,
+					(request_supplied_encoding_str,), #p_surrounding_context_attribs_tpl,
+					error_user_msg,                   #p_extern_user_msg,
+					(request_supplied_encoding_str,), #p_surrounding_context_attribs_tpl,
+					p_tornado_handler_self,           #p_req_hndlr_self,
+					p_log_fun)
 		return 
 		#-----------------------
 		
@@ -57,9 +57,9 @@ def request_wrapper(p_handler_adt,          #:Handler_adt
 		http_args_map = {}
 
 		req_args_map = extract_req_args(p_handler_adt,
-								encoding_type_str,
-								p_tornado_handler_self,
-								p_log_fun)
+					encoding_type_str,
+					p_tornado_handler_self,
+					p_log_fun)
 		
 	except Exception as e:
 		#-----------------------
@@ -69,12 +69,12 @@ def request_wrapper(p_handler_adt,          #:Handler_adt
 		error_user_msg = meta_props_map['invalid_request_args_user_error_msg_str']
 		
 		http_tornado_utils.tornado_handle_exception(e,              #p_exception,                         
-											error_msg_str,          #p_formated_msg_str,
-											(),                     #p_surrounding_context_attribs_tpl,
-											error_user_msg,         #p_extern_user_msg,
-											(),                     #p_user_msg_surrounding_context_attribs_tpl
-											p_tornado_handler_self, #p_req_hndlr_self,
-											p_log_fun)
+						error_msg_str,          #p_formated_msg_str,
+						(),                     #p_surrounding_context_attribs_tpl,
+						error_user_msg,         #p_extern_user_msg,
+						(),                     #p_user_msg_surrounding_context_attribs_tpl
+						p_tornado_handler_self, #p_req_hndlr_self,
+						p_log_fun)
 		return 
 		#-----------------------
 		
@@ -87,8 +87,8 @@ def request_wrapper(p_handler_adt,          #:Handler_adt
 		#Like other headers, cookies must be sent before any output from your script (this is a protocol restriction).
 		
 		session_id_str = http_tornado_session.get_session_id(p_tornado_handler_self,
-														p_db_context_map,
-														p_log_fun)
+										p_db_context_map,
+										p_log_fun)
 		#the extracted session_id is appended to request arguments, so that the user has access to it
 		req_args_map['session_id_str'] = session_id_str
 		session_info_map               = http_tornado_session.get_session_info(session_id_str,
@@ -133,9 +133,9 @@ def request_wrapper(p_handler_adt,          #:Handler_adt
 				
 				#encode and send results back to client
 				encoded_response = encode_usr_handler_output(response_map,
-													encoding_type_str,
-													p_tornado_handler_self,
-													p_log_fun)
+									encoding_type_str,
+									p_tornado_handler_self,
+									p_log_fun)
 	
 				p_tornado_handler_self.write(encoded_response)
 				p_tornado_handler_self.finish()
@@ -148,20 +148,20 @@ def request_wrapper(p_handler_adt,          #:Handler_adt
 			p_log_fun('INFO','session_info_map:%s'%(session_info_map))
 
 			http_tornado_session.set_session_info_in_db(session_id_str,
-												session_info_map,
-												p_db_context_map,
-												p_log_fun)
+								session_info_map,
+								p_db_context_map,
+								p_log_fun)
 			#--------------------
 		#----------------------------------------------
 		
 		#p_log_fun - this passed in log_fun is the system log_fun. 
 		#						 handlers can use other log_fun's which can have other log targets. '''
 		p_handler_adt.usr_handler_fun(req_args_map,
-								p_sys_args_map,
+					p_sys_args_map,
 
-								p_db_context_map,
-								onComplete_fun,
-								p_log_fun)
+					p_db_context_map,
+					onComplete_fun,
+					p_log_fun)
 		
 		#--------------------
 	except Exception as e:
@@ -173,19 +173,19 @@ def request_wrapper(p_handler_adt,          #:Handler_adt
 		
 		surrounding_context_attribs_tpl = (p_handler_adt.name_str,)
 		
-		http_tornado_utils.tornado_handle_exception(e,                       #p_exception,                         
-											error_msg_str,                   #p_formated_msg_str,
-											surrounding_context_attribs_tpl,
-											error_user_msg,                  #p_extern_user_msg,
-											(),                              #p_user_msg_surrounding_context_attribs_tpl
-											p_tornado_handler_self,          #p_req_hndlr_self,
-											p_log_fun)
+		http_tornado_utils.tornado_handle_exception(e,   #p_exception,                         
+						error_msg_str,                   #p_formated_msg_str,
+						surrounding_context_attribs_tpl,
+						error_user_msg,                  #p_extern_user_msg,
+						(),                              #p_user_msg_surrounding_context_attribs_tpl
+						p_tornado_handler_self,          #p_req_hndlr_self,
+						p_log_fun)
 		return 
 		#-----------------------
 #----------------------------------------------
 def handle_redirect(p_usr_handler_result_tpl,
-			p_tornado_handler_self,
-			p_log_fun):
+		p_tornado_handler_self,
+		p_log_fun):
 	p_log_fun('FUN_ENTER','http_tornado_req_handler.handle_redirect()')
 	redirect_type = p_usr_handler_result_tpl[1]
 	
@@ -208,7 +208,7 @@ def handle_redirect(p_usr_handler_result_tpl,
 		assert isinstance(args_map,dict)
 		
 		servers_info_lst = gf_rpc_server_discovery.get_server_info(server_name,
-															p_log_fun)
+											p_log_fun)
 		
 		#FIX!! - there is no load balancing here in case multiple server info's 
 		#        are returned in servers_info_lst, or any kind of performance check 
@@ -219,18 +219,18 @@ def handle_redirect(p_usr_handler_result_tpl,
 		
 		args_str  = urllib.urlencode(args_map)
 		final_url = '%s:%s/%s/%s?%s'%(server_info_map['host'],
-			                            server_info_map['port'],
-			                            module_name,
-			                            fun_name,
-			                            args_str)
+						server_info_map['port'],
+						module_name,
+						fun_name,
+						args_str)
 		
 		p_tornado_handler_self.redirect(final_url)
 #----------------------------------------------
 #->:Dict
 def extract_req_args(p_handler_adt,
-				p_encoding_type_str,
-				p_tornado_handler_self,
-				p_log_fun):
+		p_encoding_type_str,
+		p_tornado_handler_self,
+		p_log_fun):
 	p_log_fun('FUN_ENTER','http_tornado_req_handler.extract_req_args()')
 	
 	#user handlers can access the encoding type
@@ -262,9 +262,9 @@ def extract_req_args(p_handler_adt,
 		
 	if not data == None:
 		decoded_data_map = decode_data(p_encoding_type_str,
-								data,
-								p_tornado_handler_self,
-								p_log_fun)
+				data,
+				p_tornado_handler_self,
+				p_log_fun)
 		
 		p_log_fun('INFO','decoded_data_map:%s'%(decoded_data_map))
 		
@@ -300,7 +300,7 @@ def extract_req_args(p_handler_adt,
 #----------------------------------------------
 #:String
 def get_encoding(p_tornado_handler_self,
-			p_log_fun):
+		p_log_fun):
 	p_log_fun('FUN_ENTER','http_tornado_req_handler.get_encoding()')
 	
 	#in the erl/js rpc_server the encoding is not extracted in the http backend
@@ -309,7 +309,7 @@ def get_encoding(p_tornado_handler_self,
 	#I havent found a way to get all arguments and then iterate ver these in general rpc_server)'''
 	#IMPORTANT!! - encoding is always specified as a URL argument
 	encoding_type = p_tornado_handler_self.get_argument('e', 
-													'json') #p_default_encoding   
+						'json') #p_default_encoding   
 	
 	#-----------------------
 	#ERROR HANDLING
@@ -349,9 +349,9 @@ def decode_data(p_encoding_type,
 		error_msg_str = gf_rpc_server_meta.get_meta_props(p_log_fun)['decoding_error_msg']
 
 		gf_error.handle_exception(e,       #p_exception,
-							error_msg_str, #p_formated_msg_str,
-							(),            #p_surrounding_context_attribs_tpl,
-							p_log_fun)
+				error_msg_str, #p_formated_msg_str,
+				(),            #p_surrounding_context_attribs_tpl,
+				p_log_fun)
 		raise #throw the exception last cought
 		#-----------------------
 #----------------------------------------------
@@ -359,9 +359,9 @@ def decode_data(p_encoding_type,
 
 #->:String('error'|encoded_result_str(json_data))|:Binary(encoded_result_bin(bert_data))
 def encode_usr_handler_output(p_result,
-					p_encoding_type,
-					p_tornado_handler_self,
-					p_log_fun):
+		p_encoding_type,
+		p_tornado_handler_self,
+		p_log_fun):
 	p_log_fun('FUN_ENTER','http_tornado_req_handler.encode_usr_handler_output()')
 	try:
 		if p_encoding_type == 'json':
@@ -380,8 +380,8 @@ def encode_usr_handler_output(p_result,
 		error_msg_str = gf_rpc_server_meta.encoding_error_msg
 
 		gf_error.handle_exception(e,   #p_exception,
-						error_msg_str, #p_formated_msg_str,
-						(),            #p_surrounding_context_attribs_tpl,
-						p_log_fun)
+			error_msg_str, #p_formated_msg_str,
+			(),            #p_surrounding_context_attribs_tpl,
+			p_log_fun)
 		raise #throw the exception last cought
 		#-----------------------

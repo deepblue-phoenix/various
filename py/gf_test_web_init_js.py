@@ -13,22 +13,22 @@ from   PySide.QtWebKit import *
 import gf_test_web
 #-------------------------------------------------
 def init_js(p_qt_web_page,
-		p_async_callbacks_tracker_map,
-		p_log_fun,
-		p_verbose_bool = False):
+	p_async_callbacks_tracker_map,
+	p_log_fun,
+	p_verbose_bool = False):
 	if p_verbose_bool: p_log_fun('FUN_ENTER','gf_test_web_init_js.init_js()')
 	
 	init_js_sys_event_handlers(p_qt_web_page,
-						p_log_fun,
-						p_verbose_bool = p_verbose_bool)
+				p_log_fun,
+				p_verbose_bool = p_verbose_bool)
 	init_py_api_to_js(p_qt_web_page,
 			p_async_callbacks_tracker_map,
 			p_log_fun,
 			p_verbose_bool = p_verbose_bool)
 #-------------------------------------------------
 def init_js_sys_event_handlers(p_qt_web_page,
-						p_log_fun,
-						p_verbose_bool = False):
+				p_log_fun,
+				p_verbose_bool = False):
 	if p_verbose_bool: p_log_fun('FUN_ENTER','gf_test_web_init_js.init_js_sys_event_handlers()')
 	
 	#-------------------------------------------------	
@@ -37,8 +37,8 @@ def init_js_sys_event_handlers(p_qt_web_page,
 	#-------------------------------------------------
 	def js_console_msg_handler(p_message, p_line, p_sourceid):
 		msg = 'JS_CONSOLE - line:%s - %s - %s'%(p_line,
-											p_sourceid,
-											p_message)
+								p_sourceid,
+								p_message)
 		p_log_fun('ERROR',msg)
 	#-------------------------------------------------
 	def js_confirm_handler(webframe, message):
@@ -54,9 +54,9 @@ def init_js_sys_event_handlers(p_qt_web_page,
   
 #-------------------------------------------------	
 def init_py_api_to_js(p_qt_web_page,
-			p_async_callbacks_tracker_map,
-			p_log_fun,
-			p_verbose_bool = False):
+		p_async_callbacks_tracker_map,
+		p_log_fun,
+		p_verbose_bool = False):
 	if p_verbose_bool: p_log_fun('FUN_ENTER','gf_test_web_init_js.init_py_api_to_js()')
 	assert isinstance(p_async_callbacks_tracker_map,dict)
 	
@@ -67,7 +67,7 @@ def init_py_api_to_js(p_qt_web_page,
 
 		@QtCore.Slot(str)
 		def pass_sync_result_to_py(self,
-							p_result_json_str):
+				p_result_json_str):
 			if p_verbose_bool: p_log_fun('FUN_ENTER','gf_test_web_init_js.init_py_api_to_js().pass_sync_result_to_py()')
 			#p_log_fun('INFO'     ,'p_result_json_str:%s'%(p_result_json_str))
 			
@@ -87,7 +87,7 @@ def init_py_api_to_js(p_qt_web_page,
 		#-------------------------------------------------	
 		@QtCore.Slot(str)
 		def pass_async_result_to_py(self,
-							p_result_json_str):
+				p_result_json_str):
 			if p_verbose_bool: p_log_fun('FUN_ENTER','gf_test_web_init_js.init_py_api_to_js().pass_async_result_to_py()')
 			
 			result_decoded = json.loads(p_result_json_str.encode('ascii','ignore'))
@@ -105,8 +105,8 @@ def init_py_api_to_js(p_qt_web_page,
 		#-------------------------------------------------
 		@QtCore.Slot(str,str)
 		def py_log_fun(self,              
-					p_group_str,
-					p_msg_str):
+			p_group_str,
+			p_msg_str):
 			
 			group_str = p_group_str.encode('ascii','ignore')
 			msg_str   = p_msg_str.encode('ascii','ignore')

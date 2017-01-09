@@ -47,12 +47,12 @@ class _ExtendedNetworkCookieJar(QtNetwork.QNetworkCookieJar):
 			domain_flag = str(cookie.domain()).startswith(".")
 			
 			return "\t".join([byte2str(cookie.domain()),
-						bool2str(domain_flag),
-						byte2str(cookie.path()),
-						bool2str(cookie.isSecure()),
-						byte2str(cookie.expirationDate().toTime_t()),
-						byte2str(cookie.name()),
-						byte2str(cookie.value())])
+					bool2str(domain_flag),
+					byte2str(cookie.path()),
+					bool2str(cookie.isSecure()),
+					byte2str(cookie.expirationDate().toTime_t()),
+					byte2str(cookie.name()),
+					byte2str(cookie.value())])
 		#---------------------------------------------------------------
 		lines = [get_line(cookie) for cookie in self.allCookies()]
 		return "\n".join(header + lines)

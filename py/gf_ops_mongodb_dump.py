@@ -2,16 +2,14 @@
 
 import os
 import datetime
-
 import cuisine
-
 import gf_fabric_utils
 #-------------------------------------------------------------
 #->:Dict
 def get_remote_db_dump(p_target_node_phys_lst,
-					p_fab_api,
-					p_log_fun,
-					p_parallel_bool = False):
+		p_fab_api,
+		p_log_fun,
+		p_parallel_bool = False):
 	p_log_fun('FUN_ENTER','gf_ops_data_dump.get_remote_db_dump()')
 	
 	meta_props_map       = gf_ops_meta.get_meta_props(p_log_fun)
@@ -25,8 +23,8 @@ def get_remote_db_dump(p_target_node_phys_lst,
 			
 		current_datetime_str         = datetime.datetime.now().isoformat()
 		remote_db_dump_file_path_str = '%s/db_dump.txt+%s+%s'%(meta_props_map['remote_db_data_root_dir_path_str'],
-			                                                   current_datetime_str,
-			                                                   current_host_str)
+										current_datetime_str,
+										current_host_str)
 		#------------
 		#DOWNLOAD DB DUMP FILE
 
@@ -35,22 +33,22 @@ def get_remote_db_dump(p_target_node_phys_lst,
 			'-db_file_path=%s'%(remote_db_dump_file_path_str)
 		]
 		args_str = reduce(lambda p_accum_str,p_arg_str:'%s %s'%(p_accum_str,p_arg_str),
-						args_lst)
+				args_lst)
 		
 		#"gf_data_tool_cmdline" - is a part of the gf_common application server modules
 		remote_gf_data_tool_py_module_path_str = '%s/gf_common/gf_data_tool_cmdline.pyc'%(meta_props_map['remote_apps_server_code_root_dir_path_str'])
 		cuisine.file_is_file(remote_gf_data_tool_py_module_path_str)
 		
 		remote_command_str = 'python %s %s'%(remote_gf_data_tool_py_module_path_str,
-										args_str)
+								args_str)
 		
 		p_fab_api.run(remote_command_str)
 		p_fab_api.get(remote_db_dump_file_path_str,
-			          meta_props_map['local_db_data_root_dir_path_str'])
+				meta_props_map['local_db_data_root_dir_path_str'])
 		#------------
 		
 		local_db_dump_file_path_str = '%s/%s'%(meta_props_map['local_db_data_root_dir_path_str'],
-			                                   os.path.basename(remote_db_dump_file_path_str))
+										os.path.basename(remote_db_dump_file_path_str))
 		
 		
 		results_per_host_map[current_host_str] = {
@@ -59,24 +57,24 @@ def get_remote_db_dump(p_target_node_phys_lst,
 	#-------------------------------------------------------------
 	
 	gf_fabric_utils.run_task_on_node_phys(task,        #p_task_fun,
-									p_target_node_phys_lst, #p_node_phys_adts_lst,
-									p_fab_api,
-									p_log_fun,
+					p_target_node_phys_lst, #p_node_phys_adts_lst,
+					p_fab_api,
+					p_log_fun,
 
-									p_run_tasks_in_parallel_bool = p_parallel_bool,
-									p_verbose_bool               = True)
+					p_run_tasks_in_parallel_bool = p_parallel_bool,
+					p_verbose_bool               = True)
 	return results_per_host_map
 #-------------------------------------------------------------
 #->:Dict
 def get_latest_date_archived_db_dumps(p_local_db_data_root_dir_path_str,
-									p_log_fun):
+						p_log_fun):
 	p_log_fun('FUN_ENTER','gf_ops_data_dump.get_latest_date_archived_db_dumps()')
 
 	#:List<:Dict>
 	db_dumps_infos_lst = list_all_archived_remote_db_dumps(p_local_db_data_root_dir_path_str,
-													p_log_fun,
-													p_count_dump_file_lines_bool = False,
-													p_vis_bool                   = False)
+									p_log_fun,
+									p_count_dump_file_lines_bool = False,
+									p_vis_bool                   = False)
 	assert isinstance(db_dumps_infos_lst,list)
 	assert len(db_dumps_infos_lst) > 0
 
@@ -101,8 +99,8 @@ def get_latest_date_archived_db_dumps(p_local_db_data_root_dir_path_str,
 
 		#sort all dumps (per node) by date
 		sorted_by_date_lst = sorted(dumps_lst,
-									key     = lambda p_dump_info_map:p_dump_info_map['dump_creation_date_str'],
-									reverse = True)
+						key     = lambda p_dump_info_map:p_dump_info_map['dump_creation_date_str'],
+						reverse = True)
 		latest_dump_map = sorted_by_date_lst[0]
 
 		assert isinstance(latest_dump_map,dict)
@@ -123,9 +121,9 @@ def get_latest_date_archived_db_dumps(p_local_db_data_root_dir_path_str,
 #-------------------------------------------------------------
 #->:List<:Dict>
 def list_all_archived_remote_db_dumps(p_local_db_data_root_dir_path_str,
-								p_log_fun,
-								p_count_dump_file_lines_bool = True,
-								p_vis_bool                   = False):
+				p_log_fun,
+				p_count_dump_file_lines_bool = True,
+				p_vis_bool                   = False):
 	p_log_fun('FUN_ENTER','gf_ops_data_dump.list_all_archived_remote_db_dumps()')
 	assert os.path.isdir(p_local_db_data_root_dir_path_str)
 
@@ -150,9 +148,9 @@ def list_all_archived_remote_db_dumps(p_local_db_data_root_dir_path_str,
 			with open(p_file_path_str) as f:
 				
 				#enumerate(sequence, start=0) - Return an enumerate object
-		    	#next() - method of the iterator returned by enumerate() returns a tuple 
-		    	#         containing a count (from start which defaults to 0) and the values 
-		    	#         obtained from iterating over sequence:
+				#next() - method of the iterator returned by enumerate() returns a tuple 
+				#         containing a count (from start which defaults to 0) and the values 
+				#         obtained from iterating over sequence:
 				for i, l in enumerate(f):
 					pass
 
@@ -193,7 +191,7 @@ def list_all_archived_remote_db_dumps(p_local_db_data_root_dir_path_str,
 
 	if p_vis_bool:
 		gf_ops_db_vis.view_db_dumps_stats(valid_db_dumps_infos_lst,
-									p_log_fun)
+					p_log_fun)
 
 	return valid_db_dumps_infos_lst
 #-------------------------------------------------------------

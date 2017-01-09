@@ -6,13 +6,13 @@ import time
 import gf_fabric_utils
 #---------------------------------------------------
 def get_run_cmd(p_container_name_str,
-			p_container_image_name_str,
-			p_log_fun,
-			p_allow_iptables_bool = True,
-			p_docker_network_str  = 'gf_staging',
-			p_docker_ports_map    = None,
-			p_docker_volumes_lst  = None,
-			p_docker_env_vars_map = None):
+		p_container_image_name_str,
+		p_log_fun,
+		p_allow_iptables_bool = True,
+		p_docker_network_str  = 'gf_staging',
+		p_docker_ports_map    = None,
+		p_docker_volumes_lst  = None,
+		p_docker_env_vars_map = None):
 	p_log_fun('FUN_ENTER','gf_swarm.get_run_cmd()')
 
 	#---------------------
@@ -60,7 +60,7 @@ def get_run_cmd(p_container_name_str,
 			internal_port_str = v
 
 			a = '-p %s:%s'%(extern_port_str,
-							internal_port_str)
+					internal_port_str)
 			cmd_lst.append(a)			
 	#-------------
 	#ENV_VARS
@@ -96,7 +96,7 @@ def get_run_cmd(p_container_name_str,
 #---------------------------------------------------
 #->:String
 def create_swarm_cluster(p_fab_api,
-					p_log_fun):
+			p_log_fun):
 	p_log_fun('FUN_ENTER','gf_swarm.create_swarm_cluster()')
 
 	#"--rm" - remove command container after running it
@@ -107,11 +107,11 @@ def create_swarm_cluster(p_fab_api,
 	return cluster_id_str
 #---------------------------------------------------
 def db_create__swarm_cluster_info(p_cluster_name_str,
-						p_swarm_cluster_id_str,
-						p_db_context_map,
-						p_log_fun,
-						p_db_name_str   = 'gf_ops',
-						p_coll_name_str = 'swarm_cluster_info'):
+			p_swarm_cluster_id_str,
+			p_db_context_map,
+			p_log_fun,
+			p_db_name_str   = 'gf_ops',
+			p_coll_name_str = 'swarm_cluster_info'):
 	p_log_fun('FUN_ENTER','gf_swarm.boostrap().db_create__swarm_cluster_info()')
 	assert  isinstance(p_swarm_cluster_id_str,basestring)
 
@@ -129,10 +129,10 @@ def db_create__swarm_cluster_info(p_cluster_name_str,
 #---------------------------------------------------
 #->:Map
 def db_get__swarm_cluster_info(p_cluster_name_str,
-						p_db_context_map,
-						p_log_fun,
-						p_db_name_str   = 'gf_ops',
-						p_coll_name_str = 'swarm_cluster_info'):
+				p_db_context_map,
+				p_log_fun,
+				p_db_name_str   = 'gf_ops',
+				p_coll_name_str = 'swarm_cluster_info'):
 	p_log_fun('FUN_ENTER','gf_swarm.db_get__swarm_cluster_info()')
 	assert isinstance(p_cluster_name_str,basestring)
 
@@ -141,20 +141,20 @@ def db_get__swarm_cluster_info(p_cluster_name_str,
 	coll           = gf_node_phy_db[p_coll_name_str]
 
 	newest__cluster_info_map = coll.find({
-									'obj_class_str':'swarm_cluster_info',
-									'name_str'     :p_cluster_name_str
-								}).sort("creation_unix_time_str",-1)[0]
+					'obj_class_str':'swarm_cluster_info',
+					'name_str'     :p_cluster_name_str
+				}).sort("creation_unix_time_str",-1)[0]
 
 	assert newest__cluster_info_map.has_key('swarm_cluster_id_str')
 	return newest__cluster_info_map
 #---------------------------------------------------
 def join_node_to_cluster(p_cluster_id_str,
-					p_member_host_str,
+			p_member_host_str,
 
-					p_fab_api,
-					p_log_fun,
-					p_docker_port_str                      = '2375',
-					p_docker_kv_store__etcd__host_port_str = '127.0.0.1:2379'):
+			p_fab_api,
+			p_log_fun,
+			p_docker_port_str                      = '2375',
+			p_docker_kv_store__etcd__host_port_str = '127.0.0.1:2379'):
 	p_log_fun('FUN_ENTER','gf_swarm.join_node_to_cluster()')
 	assert isinstance(p_cluster_id_str,basestring)
 	
@@ -178,10 +178,10 @@ def join_node_to_cluster(p_cluster_id_str,
 	r = p_fab_api.run(cmd_str)
 #---------------------------------------------------
 def view_swarm_info__remote(p_master__node_phy_adt,
-					p_fab_api,
-					p_db_context_map,
-					p_log_fun,
-					p_cluster_name_str = 'public_cluster'):
+		p_fab_api,
+		p_db_context_map,
+		p_log_fun,
+		p_cluster_name_str = 'public_cluster'):
 	p_log_fun('FUN_ENTER','gf_swarm.view_swarm_info__remote()')
 	assert isinstance(p_master__node_phy_adt,gf_node_phy_adt.NodePhy_ADT)
 
@@ -190,8 +190,8 @@ def view_swarm_info__remote(p_master__node_phy_adt,
 		p_log_fun('FUN_ENTER','gf_swarm.view_swarm_info__remote().task()')
 	
 		swarm_cluster_info_map = db_get__swarm_cluster_info(p_cluster_name_str,
-													p_db_context_map,
-													p_log_fun)
+									p_db_context_map,
+									p_log_fun)
 		assert isinstance(swarm_cluster_info_map,dict)
 		swarm_cluster_id_str = swarm_cluster_info_map['swarm_cluster_id_str']
 
@@ -203,19 +203,19 @@ def view_swarm_info__remote(p_master__node_phy_adt,
 		#----------------
 	#---------------------------------------------------
 	p_log_fun('INFO','========= RUNNING TASK ON NODE [%s] - user [%s]'%(p_master__node_phy_adt.name_str,
-																		p_master__node_phy_adt.user_str))
+													p_master__node_phy_adt.user_str))
 	gf_fabric_utils.run_task_on_node_phys(task,       #p_task_fun,
-							[p_master__node_phy_adt], #p_target_node_phys_lst, #p_node_phys_adts_lst,
-							p_fab_api,
-							p_log_fun,
-							p_verbose_bool = True)	
+				[p_master__node_phy_adt], #p_target_node_phys_lst, #p_node_phys_adts_lst,
+				p_fab_api,
+				p_log_fun,
+				p_verbose_bool = True)	
 #---------------------------------------------------
 def init_swarm_manager(p_cluster_id_str,
-					p_fab_api,
-					p_log_fun,
-					p_swarm_manager_host_str     = '127.0.0.1',
-					p_swarm_manager_port_str     = '5001',
-					p_os_startup_script_path_str = '/etc/rc.local'):
+		p_fab_api,
+		p_log_fun,
+		p_swarm_manager_host_str     = '127.0.0.1',
+		p_swarm_manager_port_str     = '5001',
+		p_os_startup_script_path_str = '/etc/rc.local'):
 	p_log_fun('FUN_ENTER','gf_swarm.init_swarm_manager()')
 	assert isinstance(p_cluster_id_str,basestring)
 

@@ -10,8 +10,8 @@ import datetime
 import gf_test_web
 #-------------------------------------------------
 def history_go_back(p_qt_webpage,
-				p_log_fun,
-				p_verbose_bool = False):
+		p_log_fun,
+		p_verbose_bool = False):
 	if p_verbose_bool: p_log_fun('FUN_ENTER','gf_test_web_utils.history_go_back()')
 	
 	#:PySide.QtWebKit.QWebHistory
@@ -19,11 +19,11 @@ def history_go_back(p_qt_webpage,
 	qt_history.back()
 #-------------------------------------------------
 def scroll_page(p_vertical_pixels_num_to_scroll,
-			p_horizontal_pixels_num_to_scroll,
+		p_horizontal_pixels_num_to_scroll,
 
-			p_qt_page_frame,
-			p_log_fun,
-			p_verbose_bool = False):
+		p_qt_page_frame,
+		p_log_fun,
+		p_verbose_bool = False):
 	if p_verbose_bool: p_log_fun('FUN_ENTER','gf_test_web_utils.scroll_page()')
 	
 	p_qt_page_frame.scroll(p_horizontal_pixels_num_to_scroll,
@@ -33,9 +33,9 @@ def scroll_page(p_vertical_pixels_num_to_scroll,
 #                   and it was shown not to work for JS ajax calls
 
 def pause_event_loop_fun(p_seconds,
-					p_qt_app,
-					p_log_fun,
-					p_verbose_bool = False):
+			p_qt_app,
+			p_log_fun,
+			p_verbose_bool = False):
 	if p_verbose_bool: p_log_fun('FUN_ENTER','gf_test_web_utils.pause_event_loop_fun()')
 	
 	interupt_sleep = .05
@@ -59,9 +59,9 @@ def pause_event_loop_fun(p_seconds,
 
 #->:Any
 def eval_sync_js_fun(p_script_code_str,
-				p_qt_page_frame,
-				p_log_fun,
-				p_verbose_bool = False):
+		p_qt_page_frame,
+		p_log_fun,
+		p_verbose_bool = False):
 	if p_verbose_bool: p_log_fun('FUN_ENTER','gf_test_web_utils.eval_sync_js_fun()')
 	if p_verbose_bool: p_log_fun('INFO'     ,'p_script_code_str:%s'%(p_script_code_str))
 	
@@ -81,14 +81,14 @@ def eval_sync_js_fun(p_script_code_str,
 
 #->:Any
 def eval_async_js_fun(p_async_script_code_str,
-				p_callback_id,
-				p_timeout_seconds,
+		p_callback_id,
+		p_timeout_seconds,
 
-				p_async_callbacks_tracker_map,
-				p_qt_app,
-				p_qt_page_frame,
-				p_log_fun,
-				p_verbose_bool = False):
+		p_async_callbacks_tracker_map,
+		p_qt_app,
+		p_qt_page_frame,
+		p_log_fun,
+		p_verbose_bool = False):
 	if p_verbose_bool: p_log_fun('FUN_ENTER','gf_test_web_utils.eval_async_js_fun()')
 	assert isinstance(p_callback_id,basestring)
 	
@@ -132,9 +132,9 @@ def eval_async_js_fun(p_async_script_code_str,
 
 #->:Dict(response_infos_map)
 def check_all_requests_returned(p_since_last_request_timeout_seconds,
-					p_on_timeout_handler_fun,
-					p_log_fun,
-					p_verbose_bool = False):
+			p_on_timeout_handler_fun,
+			p_log_fun,
+			p_verbose_bool = False):
 	if p_verbose_bool: p_log_fun('FUN_ENTER','gf_test_web_utils.check_all_requests_returned()')
 	
 	#:datetime
@@ -156,9 +156,9 @@ def check_all_requests_returned(p_since_last_request_timeout_seconds,
 			p_on_timeout_handler_fun()	
 #-------------------------------------------------
 def inject_scripts_into_page(p_scripts_to_inject_paths_lst,
-						p_qt_page_frame,
-						p_log_fun,
-						p_verbose_bool = False): 
+			p_qt_page_frame,
+			p_log_fun,
+			p_verbose_bool = False): 
 	if p_verbose_bool: p_log_fun('FUN_ENTER','gf_test_web_utils.inject_scripts_into_page()')
 	
 	for script_path in p_scripts_to_inject_paths_lst:

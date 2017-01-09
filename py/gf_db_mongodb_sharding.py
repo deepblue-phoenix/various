@@ -6,13 +6,13 @@ import gf_db_mongodb
 #----------------------------------------------
 #->:Dict
 def start_sharding_cluster(p_name_str,
-					p_config_servers_static_infos_lst,
-					p_shard_router_servers_static_infos_lst,
-					p_shard_servers_static_infos_lst,
+		p_config_servers_static_infos_lst,
+		p_shard_router_servers_static_infos_lst,
+		p_shard_servers_static_infos_lst,
 
-					p_run_cmd_fun,
-					p_log_fun,
-					p_locality_type_str = 'local'):
+		p_run_cmd_fun,
+		p_log_fun,
+		p_locality_type_str = 'local'):
 	p_log_fun('FUN_ENTER','gf_db_mongodb_sharding.start_sharding_cluster()')
 	assert isinstance(p_name_str                             ,basestring)
 	assert isinstance(p_config_servers_static_infos_lst      ,list)
@@ -26,8 +26,8 @@ def start_sharding_cluster(p_name_str,
 	#---------------------------------------------------
 	#->:List<:Dict>
 	def start_servers(p_servers_static_infos_lst,
-				p_type_str,
-				p_config_servers_runtime_infos_lst = None):
+			p_type_str,
+			p_config_servers_runtime_infos_lst = None):
 		p_log_fun('FUN_ENTER','gf_db_mongodb_sharding.start_sharding_cluster().start_servers()')
 
 		assert isinstance(p_config_servers_static_infos_lst,list)
@@ -44,9 +44,9 @@ def start_sharding_cluster(p_name_str,
 
 			if p_type_str == 'config_server':
 				server_runtime_info_map = start_server(server_info_map,
-												p_type_str,
-												run_cmd_fun,
-												p_log_fun)
+									p_type_str,
+									run_cmd_fun,
+									p_log_fun)
 			#------------
 			#SHARD ROUTER
 
@@ -64,18 +64,18 @@ def start_sharding_cluster(p_name_str,
 				config_servers_runtime_infos_map = keyup_config_servers_runtime_infos()
 
 				server_runtime_info_map = start_server(server_info_map,
-												p_type_str,
-												run_cmd_fun,
-												p_log_fun,
-												p_config_servers_runtime_infos_map = config_servers_runtime_infos_map)
+									p_type_str,
+									run_cmd_fun,
+									p_log_fun,
+									p_config_servers_runtime_infos_map = config_servers_runtime_infos_map)
 			#------------
 			#SHARD
 
 			elif p_type_str == 'shard_server':
 				server_runtime_info_map = start_server(server_info_map,
-												p_type_str,
-												run_cmd_fun,
-												p_log_fun)
+									p_type_str,
+									run_cmd_fun,
+									p_log_fun)
 			#------------
 			servers_runtime_infos_lst.append(server_runtime_info_map)
 
@@ -85,7 +85,7 @@ def start_sharding_cluster(p_name_str,
 				assert isinstance(pid_int,int)
 
 				process_utils.check_pid_is_running(pid_int,
-												p_log_fun)
+								p_log_fun)
 
 		return servers_runtime_infos_lst
 	#----------------------------------------------
@@ -93,19 +93,19 @@ def start_sharding_cluster(p_name_str,
 	#MAIN
 
 	config_servers_runtime_infos_lst = start_servers(p_config_servers_static_infos_lst,
-		                                             'config_server')
+										'config_server')
 	shard_router_servers_runtime_infos_lst = start_servers(p_shard_router_servers_static_infos_lst,
-												'shard_router_server',
-												p_config_servers_runtime_infos_lst = config_servers_runtime_infos_lst)
+								'shard_router_server',
+								p_config_servers_runtime_infos_lst = config_servers_runtime_infos_lst)
 
 
 	shard_servers_runtime_infos_lst = start_servers(p_shard_servers_static_infos_lst,
-											'shard_server')
+							'shard_server')
 
 	add_shards_to_cluster(shard_servers_runtime_infos_lst,
-				shard_router_servers_runtime_infos_lst,
-				run_cmd_fun,
-				p_log_fun)
+			shard_router_servers_runtime_infos_lst,
+			run_cmd_fun,
+			p_log_fun)
 	#--------------
 
 	sharding_cluster_info_map = {
@@ -119,10 +119,10 @@ def start_sharding_cluster(p_name_str,
 #------------------------------------------------------
 #->:Dict
 def start_server(p_server_info_map,
-			p_type_str,
-			p_run_cmd_fun,
-			p_log_fun,
-			p_config_servers_runtime_infos_map = None):
+		p_type_str,
+		p_run_cmd_fun,
+		p_log_fun,
+		p_config_servers_runtime_infos_map = None):
 	p_log_fun('FUN_ENTER','gf_db_mongodb_sharding.start_server()')
 	assert p_type_str == 'config_server' or \
 	       p_type_str == 'shard_router_server' or \
@@ -148,35 +148,35 @@ def start_server(p_server_info_map,
 		assert p_config_servers_runtime_infos_map == None
 
 		server_runtime_info_map = gf_db_mongodb.start_db_server(name_str,                              
-													data_dir_path_str, #p_db_server_data_dir_path_str,
-													log_file_path_str,
-													p_run_cmd_fun,
-													p_log_fun,
-													p_host_str              = host_str,
-													p_port_str              = port_str,
-													p_is_config_server_bool = True)
+										data_dir_path_str, #p_db_server_data_dir_path_str,
+										log_file_path_str,
+										p_run_cmd_fun,
+										p_log_fun,
+										p_host_str              = host_str,
+										p_port_str              = port_str,
+										p_is_config_server_bool = True)
 		assert isinstance(server_runtime_info_map,dict)
 	#--------------
 	elif p_type_str == 'shard_router_server':
 		assert isinstance(p_config_servers_runtime_infos_map,dict)
 
 		server_runtime_info_map = start_shard_router_server(name_str,
-													host_str,
-													port_str,
-													p_config_servers_runtime_infos_map,
-													log_file_path_str,
-													p_run_cmd_fun,
-													p_log_fun)
+										host_str,
+										port_str,
+										p_config_servers_runtime_infos_map,
+										log_file_path_str,
+										p_run_cmd_fun,
+										p_log_fun)
 		assert isinstance(server_runtime_info_map,dict)	
 	#--------------
 	elif p_type_str == 'shard_server':
 		server_runtime_info_map = gf_db_mongodb.start_db_server(name_str,
-														data_dir_path_str, #p_db_server_data_dir_path_str,
-														log_file_path_str,
-														p_run_cmd_fun,
-														p_log_fun,
-														p_host_str = host_str,
-														p_port_str = port_str)		
+										data_dir_path_str, #p_db_server_data_dir_path_str,
+										log_file_path_str,
+										p_run_cmd_fun,
+										p_log_fun,
+										p_host_str = host_str,
+										p_port_str = port_str)		
 		assert isinstance(server_runtime_info_map,dict)
 	#--------------
 
@@ -184,12 +184,12 @@ def start_server(p_server_info_map,
 #----------------------------------------------
 #->:Dict
 def start_shard_router_server(p_name_str,
-						p_host_str,
-						p_port_str,
-						p_config_servers_runtime_infos_map,
-						p_log_file_path_str,
-						p_run_cmd_fun,
-						p_log_fun):
+		p_host_str,
+		p_port_str,
+		p_config_servers_runtime_infos_map,
+		p_log_file_path_str,
+		p_run_cmd_fun,
+		p_log_fun):
 	p_log_fun('FUN_ENTER','gf_db_mongodb_sharding.start_shard_router_server()')
 	assert isinstance(p_name_str                        ,basestring)
 	assert isinstance(p_host_str                        ,basestring)
@@ -229,7 +229,7 @@ def start_shard_router_server(p_name_str,
 	#-------
 
 	args_str = reduce(lambda p_arg_str,p_accum:'%s %s'%(p_accum,p_arg_str),
-					  args_lst)
+			args_lst)
 
 	cmd_str = 'sudo mongos %s'%(args_str)
 	p_log_fun('INFO','cmd_str:%s'%(cmd_str))
@@ -246,7 +246,7 @@ def start_shard_router_server(p_name_str,
 	#              not deamon
 	#startup_process_pid_int = resulst_map['pid_int']
 	deamon_pid_int = gf_db_mongodb.get_forked_deamon_pid_from_std_out(std_out_str,
-																p_log_fun)
+										p_log_fun)
 	assert isinstance(deamon_pid_int,int)
 	#-------
 
@@ -260,9 +260,9 @@ def start_shard_router_server(p_name_str,
 	return server_info_map
 #----------------------------------------------
 def add_shards_to_cluster(p_shard_servers_runtime_infos_lst,
-				p_shard_router_servers_runtime_infos_lst,
-				p_run_cmd_fun,
-				p_log_fun):
+		p_shard_router_servers_runtime_infos_lst,
+		p_run_cmd_fun,
+		p_log_fun):
 	p_log_fun('FUN_ENTER','gf_db_mongodb_sharding.add_shards_to_cluster()')
 	assert isinstance(p_shard_servers_runtime_infos_lst       ,list)
 	assert isinstance(p_shard_router_servers_runtime_infos_lst,list)
@@ -276,9 +276,9 @@ def add_shards_to_cluster(p_shard_servers_runtime_infos_lst,
 			isinstance(shard_server_runtime_info_map,dict)
 
 			add_shard_to_cluster(shard_router_server_runtime_info_map,
-						shard_server_runtime_info_map,
-						p_run_cmd_fun,
-						p_log_fun)
+				shard_server_runtime_info_map,
+				p_run_cmd_fun,
+				p_log_fun)
 	#----------------------------------------------
 
 	#for each shard-router register all shards with it
@@ -288,9 +288,9 @@ def add_shards_to_cluster(p_shard_servers_runtime_infos_lst,
 		register_with_shard_router(shard_router_server_runtime_info_map)
 #----------------------------------------------
 def add_shard_to_cluster(p_shard_router_runtime_info_map,
-				p_shard_server_runtime_info_map,
-				p_run_cmd_fun,
-				p_log_fun):
+		p_shard_server_runtime_info_map,
+		p_run_cmd_fun,
+		p_log_fun):
 	p_log_fun('FUN_ENTER','gf_db_mongodb_sharding.add_shard_to_cluster()')
 	assert isinstance(p_shard_router_runtime_info_map,dict)
 	assert isinstance(p_shard_server_runtime_info_map,dict)

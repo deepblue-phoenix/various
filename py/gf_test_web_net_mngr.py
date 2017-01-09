@@ -19,12 +19,12 @@ import gf_test_web
 import gf_test_web_cookies
 #-------------------------------------------------
 def init(p_qt_webpage,
-		p_cookies_file_path,
+	p_cookies_file_path,
 
-		p_on_request_handler_fun,
-		p_on_reply_handler_fun,
-		p_log_fun,
-		p_verbose_bool = False):
+	p_on_request_handler_fun,
+	p_on_reply_handler_fun,
+	p_log_fun,
+	p_verbose_bool = False):
 	if p_verbose_bool: p_log_fun('FUN_ENTER','gf_test_web_net_mngr.init()')
 	assert inspect.isfunction(p_on_request_handler_fun)
 	assert inspect.isfunction(p_on_reply_handler_fun)
@@ -35,26 +35,26 @@ def init(p_qt_webpage,
 	p_qt_webpage.setNetworkAccessManager(qt_net_mngr)
 	
 	set_net_mngr_event_handlers(qt_net_mngr,
-						p_on_request_handler_fun,
-						p_on_reply_handler_fun,
-						p_log_fun)
+				p_on_request_handler_fun,
+				p_on_reply_handler_fun,
+				p_log_fun)
 	
 	if not p_cookies_file_path == None:
 		gf_test_web_cookies.init_cookies(qt_net_mngr,
-									p_cookies_file_path,
-									p_log_fun)
+						p_cookies_file_path,
+						p_log_fun)
 #---------------------------------------------------------------
 def set_net_mngr_event_handlers(p_qt_net_mngr,
-						p_on_request_handler_fun, #:Function - user-logic to be run on sending of the request
-						p_on_reply_handler_fun  , #:Function - user-logic to be run on receipt of reply
-						p_log_fun,
-						p_verbose_bool = False):
+			p_on_request_handler_fun, #:Function - user-logic to be run on sending of the request
+			p_on_reply_handler_fun  , #:Function - user-logic to be run on receipt of reply
+			p_log_fun,
+			p_verbose_bool = False):
 	if p_verbose_bool: p_log_fun('FUN_ENTER','gf_test_web_net_mngr.set_net_mngr_event_handlers()')
 	
 	#-------------------------------------------------
 	def onRequest(p_operation, 
-			p_request, 
-			p_data):
+		p_request, 
+		p_data):
 
 		if p_verbose_bool: p_log_fun('FUN_ENTER','gf_test_web_net_mngr.set_net_mngr_event_handlers().onRequest()')
 		if p_verbose_bool: p_log_fun('EXTERN','REQUEST')
@@ -79,9 +79,9 @@ def set_net_mngr_event_handlers(p_qt_net_mngr,
 		#if its False then the request is droped and not sent out
 		#if its True the request is repassed to QtNetworkManager
 		user_handler_status = p_on_request_handler_fun(url,
-												operation,
-												p_request,
-												p_data)
+								operation,
+								p_request,
+								p_data)
 		assert isinstance(user_handler_status,bool)
 		
 		if p_verbose_bool:
@@ -102,16 +102,16 @@ def set_net_mngr_event_handlers(p_qt_net_mngr,
 			
 			#:PySide.QtNetwork.QNetworkReply
 			reply = QtNetwork.QNetworkAccessManager.createRequest(p_qt_net_mngr,
-															p_operation, 
-															p_request, 
-															p_data)
+										p_operation, 
+										p_request, 
+										p_data)
 			return reply
 		else:
 			#:PySide.QtNetwork.QNetworkReply
 			reply = QtNetwork.QNetworkAccessManager.createRequest(p_qt_net_mngr,
-															p_operation, 
-															p_request, 
-															p_data)
+										p_operation, 
+										p_request, 
+										p_data)
 			return reply
 	#-------------------------------------------------
 	def onSslErrors(p_q_net_request):

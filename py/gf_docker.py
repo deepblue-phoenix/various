@@ -10,8 +10,8 @@ import fabric.contrib.files
 #---------------------------------------------------
 #->:String
 def get_cont_ip(p_container_name_str,
-			p_log_fun,
-			p_docker_net_name_str = 'gf_staging'):
+	p_log_fun,
+	p_docker_net_name_str = 'gf_staging'):
 	p_log_fun('FUN_ENTER','gf_docker.get_cont_ip()')
 	p_log_fun('INFO'     ,p_container_name_str)
 	
@@ -23,8 +23,8 @@ def get_cont_ip(p_container_name_str,
 	return cont_ip_str
 #---------------------------------------------------
 def cont_is_running(p_cont_image_name_str,
-				p_db_context_map,
-				p_log_fun):
+		p_db_context_map,
+		p_log_fun):
 	p_log_fun('FUN_ENTER','gf_docker.cont_is_running()')
 	p_log_fun('INFO'     ,'p_cont_image_name_str - %s'%(p_cont_image_name_str))
 
@@ -38,9 +38,9 @@ def cont_is_running(p_cont_image_name_str,
 		return True
 #---------------------------------------------------
 def build_image(p_dockerfile_path_str,
-				p_cont_image_name_str,
-				p_db_context_map,
-				p_log_fun):
+		p_cont_image_name_str,
+		p_db_context_map,
+		p_log_fun):
 	p_log_fun('FUN_ENTER','gf_docker.build_image()')
 	p_log_fun('INFO'     ,'dockerfile_path_str - %s'%(p_dockerfile_path_str))
 
@@ -72,9 +72,9 @@ def build_image(p_dockerfile_path_str,
 	os.chdir(context_dir_path_str)
 	
 	r = subprocess.Popen(cmd_str,
-					shell   = True,
-					stdout  = subprocess.PIPE,
-					bufsize = 1)
+			shell   = True,
+			stdout  = subprocess.PIPE,
+			bufsize = 1)
 
 	#---------------------------------------------------
 	def get_image_id_from_line(p_stdout_line_str):
@@ -104,8 +104,8 @@ def build_image(p_dockerfile_path_str,
 	os.chdir(old_cwd)
 #---------------------------------------------------
 def save_image_to_file(p_image_name_str,
-				p_file_name_str,
-				p_log_fun):
+		p_file_name_str,
+		p_log_fun):
 	p_log_fun('FUN_ENTER','gf_docker.save_image_to_file()')
 	assert isinstance(p_image_name_str,basestring)
 	cmd_lst = [
@@ -124,7 +124,7 @@ def save_image_to_file(p_image_name_str,
 #---------------------------------------------------
 #->:Map
 def get_container_info(p_container_id_str,
-				p_log_fun):
+		p_log_fun):
 	p_log_fun('FUN_ENTER','gf_docker.get_container_info()')
 
 	cmd_str = 'sudo docker inspect %s'%(p_container_id_str)
@@ -163,8 +163,8 @@ def config_remote__docker_deamon(p_fab_api,
 	#'escape=False' - If escape is False, no extra regular expression related escaping is 
 	#                 performed (this includes overriding exact so that no ^/$ is added.)
 	if fabric.contrib.files.contains(p_docker_config_path_str,
-								'^DOCKER_OPTS',
-								escape = False):
+					'^DOCKER_OPTS',
+					escape = False):
 
 		p_log_fun('INFO','DOCKER CONFIG FILE - "DOCKER_OPTS=..." - ALREADY PRESENT - skip config')
 		p_fab_api.run('service docker start') #start docker if not started
@@ -173,23 +173,23 @@ def config_remote__docker_deamon(p_fab_api,
 	else:
 
 		deamon_startup_options_lst = get_deamon__startup_options(p_log_fun,
-											p_docker_port_str                      = p_docker_port_str,
-											p_docker_host_labels_lst               = p_docker_host_labels_lst,
-											p_docker_kv_store__etcd__host_port_str = p_docker_kv_store__etcd__host_port_str)
+								p_docker_port_str                      = p_docker_port_str,
+								p_docker_host_labels_lst               = p_docker_host_labels_lst,
+								p_docker_kv_store__etcd__host_port_str = p_docker_kv_store__etcd__host_port_str)
 		assert isinstance(deamon_startup_options_lst,list)
 
 		deamon_startup_options_str = ' '.join(deamon_startup_options_lst)
 		#store Docker startup options, for the docker deamon to pick up on its startup (when the node boots up)
 		#IMPORTANT!! - '\\"' - in python to escape '"' you have to use a double slash '\\'
 		s = r'''echo DOCKER_OPTS=\\"%s\\" >> %s'''%(deamon_startup_options_str,
-												p_docker_config_path_str)
+								p_docker_config_path_str)
 
 		p_fab_api.run('service docker stop') #docker is running by default
 		p_fab_api.run(s)
 		p_fab_api.run('service docker start')
 #---------------------------------------------------
 def install_base_docker(p_fab_api,
-					p_log_fun):
+		p_log_fun):
 	p_log_fun('FUN_ENTER','gf_docker.install_base_docker()')
 
 	p_fab_api.run('apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D')
@@ -220,9 +220,9 @@ def get_deamon__startup_cmd(p_log_fun):
 #---------------------------------------------------
 #->:List<:String>
 def get_deamon__startup_options(p_log_fun,
-							p_docker_port_str                      = '2375',
-							p_docker_host_labels_lst               = None,
-							p_docker_kv_store__etcd__host_port_str = '127.0.0.1:2379'):
+			p_docker_port_str                      = '2375',
+			p_docker_host_labels_lst               = None,
+			p_docker_kv_store__etcd__host_port_str = '127.0.0.1:2379'):
 	p_log_fun('FUN_ENTER','gf_docker.get_deamon__startup_options()')
 
 	args_lst = [

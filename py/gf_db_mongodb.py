@@ -8,7 +8,7 @@ import pymongo
 #        instead of just picking the first element
 
 def get_client(p_log_fun,
-		p_host_port_lst = ['127.0.0.1:27017']):
+	p_host_port_lst = ['127.0.0.1:27017']):
 	p_log_fun('FUN_ENTER','gf_db_mongodb.get_client()')
 
 	host_str,port_str = p_host_port_lst[0].split(':')
@@ -76,10 +76,10 @@ def get_startup_command(p_db_server_data_dir_path_str,
 	#args_lst.append('--smallfiles')
 
 	args_str = reduce(lambda p_arg_str,p_accum:'%s %s'%(p_accum,p_arg_str),
-					  args_lst)
+				args_lst)
 
 	cmd_str = '%s %s'%(p_mongod_bin_file_path_str,
-		               args_str)
+				 args_str)
 
 	return cmd_str
 #------------------------------------------------------
@@ -94,20 +94,20 @@ def get_shutdown_command(p_log_fun):
 #------------------------------------------------------
 #->:Dict(server_info_dict)
 def start_db_server(p_name_str,
-				  	p_db_server_data_dir_path_str,
-				  	p_log_file_path_str,
-				  	p_run_cmd_fun,
-				  	p_log_fun,
-				  	p_host_str                 = '127.0.0.1', 
-	                p_port_str                 = '27017',
-				  	p_use_replication_bool     = False,
-				  	p_replica_set_name_str     = 'rs0',
-				  	p_wait_time_seconds        = 3,
-				  	p_is_config_server_bool    = False,
-				  	p_mongod_bin_file_path_str = '%s/mongo/mongodb-linux-i686-2.4.6/bin/mongod'%(installs_root),
-				  	p_remote_bool              = False,
+		p_db_server_data_dir_path_str,
+		p_log_file_path_str,
+		p_run_cmd_fun,
+		p_log_fun,
+		p_host_str                 = '127.0.0.1', 
+		p_port_str                 = '27017',
+		p_use_replication_bool     = False,
+		p_replica_set_name_str     = 'rs0',
+		p_wait_time_seconds        = 3,
+		p_is_config_server_bool    = False,
+		p_mongod_bin_file_path_str = '%s/mongo/mongodb-linux-i686-2.4.6/bin/mongod'%(installs_root),
+		p_remote_bool              = False,
 
-				  	p_auth_for_client_connections_bool = False):
+		p_auth_for_client_connections_bool = False):
 	p_log_fun('FUN_ENTER','gf_db_mongodb.start_db_server()')
 	p_log_fun('INFO'     ,'p_name_str                   :%s'%(p_name_str))
 	p_log_fun('INFO'     ,'p_host_str                   :%s'%(p_host_str))
@@ -121,15 +121,15 @@ def start_db_server(p_name_str,
 			envoy.run('sudo mkdir %s'%(p_db_server_data_dir_path_str))
 	
 	cmd_str = get_startup_command(p_db_server_data_dir_path_str,
-							p_log_file_path_str,
-							p_log_fun,
+				p_log_file_path_str,
+				p_log_fun,
 
-							p_port_str                         = p_port_str,
-							p_use_replication_bool             = p_use_replication_bool,
-							p_replica_set_name_str             = p_replica_set_name_str,
-							p_is_config_server_bool            = p_is_config_server_bool,
-							p_mongod_bin_file_path_str         = p_mongod_bin_file_path_str,
-							p_auth_for_client_connections_bool = p_auth_for_client_connections_bool)
+				p_port_str                         = p_port_str,
+				p_use_replication_bool             = p_use_replication_bool,
+				p_replica_set_name_str             = p_replica_set_name_str,
+				p_is_config_server_bool            = p_is_config_server_bool,
+				p_mongod_bin_file_path_str         = p_mongod_bin_file_path_str,
+				p_auth_for_client_connections_bool = p_auth_for_client_connections_bool)
 
 	sudo_cmd_str = 'sudo %s'%(cmd_str)
 	p_log_fun('INFO','cmd_str:%s'%(sudo_cmd_str))
@@ -164,7 +164,7 @@ def start_db_server(p_name_str,
 		
 		#VERIFICATION
 		gf_net_utils.check_port_is_listening(p_port_str,
-										p_log_fun)
+						p_log_fun)
 	#---------
 
 	server_info_map = {
@@ -183,7 +183,7 @@ def start_db_server(p_name_str,
 #----------------------------------------------
 #->:int
 def get_forked_deamon_pid_from_std_out(p_std_out_str,
-								p_log_fun):
+					p_log_fun):
 	p_log_fun('FUN_ENTER','gf_db_mongodb.get_forked_deamon_pid_from_std_out()')
 
 	#print '---------------------------------------------------'
@@ -217,10 +217,10 @@ def create_sharded_empty_collection(p_log_fun):
 #REPLICA_SET
 #----------------------------------------------
 def configure_replica_set(p_replica_set_name_str,
-				p_dbs_servers_infos_lst,
-				p_run_cmd_fun,
-				p_log_fun,
-				p_remote_mongo_client_bin_file_path_str = '%s/mongo/mongodb-linux-i686-2.4.6/bin/mongo'%(installs_root)):
+			p_dbs_servers_infos_lst,
+			p_run_cmd_fun,
+			p_log_fun,
+			p_remote_mongo_client_bin_file_path_str = '%s/mongo/mongodb-linux-i686-2.4.6/bin/mongo'%(installs_root)):
 	p_log_fun('FUN_ENTER','gf_db_mongodb.configure_replica_set()')
 	
 	#----------------------------------------------
@@ -244,8 +244,8 @@ def configure_replica_set(p_replica_set_name_str,
 				 primary_node_port_str)
 		
 		cmd_str = '''%s --port %s --eval "rs.initiate(%s)"'''%(p_remote_mongo_client_bin_file_path_str,
-															   primary_node_port_str,
-															   replica_sets_config_obj_str)
+											primary_node_port_str,
+											replica_sets_config_obj_str)
 		
 		result_dict = p_run_cmd_fun(cmd_str)
 		result_str  = result_dict['std_out_str']
@@ -267,12 +267,12 @@ def configure_replica_set(p_replica_set_name_str,
 			secondary_db_server_port_str = secondary_db_server_info_dict['port_str']
 			
 			p_log_fun('INFO','adding secondary server [%s:%s] to the replica set'%(secondary_db_server_host_str,
-																				   secondary_db_server_port_str))
+														secondary_db_server_port_str))
 			
 			cmd_str = '''%s --port %s --eval "rs.add('%s:%s')"'''%(p_remote_mongo_client_bin_file_path_str,
-															p_primary_node_port_str,
-															secondary_db_server_host_str,
-															secondary_db_server_port_str)
+												p_primary_node_port_str,
+												secondary_db_server_host_str,
+												secondary_db_server_port_str)
 			result_str = p_run_cmd_fun(cmd_str)
 	#----------------------------------------------
 
@@ -283,7 +283,7 @@ def configure_replica_set(p_replica_set_name_str,
 	time.sleep(3)
 #----------------------------------------------
 def view_repl_set_info(p_mongodb_host_str,
-				p_log_fun):
+			p_log_fun):
 	p_log_fun('FUN_ENTER','gf_db_mongodb.view_repl_set_info()')
 	p_log_fun('INFO','p_mongodb_host_str - %s'%(p_mongodb_host_str))
 	assert isinstance(p_mongodb_host_str,basestring)
