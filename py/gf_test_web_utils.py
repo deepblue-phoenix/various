@@ -27,7 +27,7 @@ def scroll_page(p_vertical_pixels_num_to_scroll,
 	if p_verbose_bool: p_log_fun('FUN_ENTER','gf_test_web_utils.scroll_page()')
 	
 	p_qt_page_frame.scroll(p_horizontal_pixels_num_to_scroll,
-						p_vertical_pixels_num_to_scroll)
+			p_vertical_pixels_num_to_scroll)
 #-------------------------------------------------
 #NOT TESTED YET!! - for asynchronous calls there are no tests written for it
 #                   and it was shown not to work for JS ajax calls

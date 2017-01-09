@@ -29,7 +29,7 @@ def register_node_phys_with_fabric(p_node_phys_lst,
 			
 		p_log_fun('INFO','*****************-------------------------------------*****************')
 		p_log_fun('INFO','registering node [%s] - %s'%(node_phy_adt.name_str,
-										node_phy_adt))
+							node_phy_adt))
 		p_log_fun('INFO','node_phy_adt.hosts_dict:%s'%(node_phy_adt.hosts_dict))
 
 		#target_node_host_str - can be None, if that host has not been assigned to a node yet
@@ -47,14 +47,12 @@ def register_node_phys_with_fabric(p_node_phys_lst,
 	#fabric checks the environment singleton dict to see who to connect to
 	p_fab_api.env.hosts = fabric_hosts_lst
 	
-	
 	if not p_assign_group_name_str == None:
 		assert isinstance(p_assign_group_name_str,basestring)
 		
 		#"roledefs" - registers with fabric a list of hosts that is to be then
 		#             referenced with fabric by a single name string (p_assign_group_name_str)
 		p_fab_api.env.roledefs[p_assign_group_name_str] = hosts_lst
-		
 		
 	return fabric_hosts_lst
 #---------------------------------------------------	
@@ -87,7 +85,7 @@ def run_task_on_node_phys(p_task_fun,
 	#                             a dict of standard outputs of each task run, 
 	#                             per host supplied in "hosts" argument
 	all_hosts_return_vals_map = p_fab_api.execute(p_task_fun,
-								hosts = fabric_format_hosts_lst)
+						hosts = fabric_format_hosts_lst)
 	assert isinstance(all_hosts_return_vals_map,dict)
 	#-------------------
 
@@ -116,8 +114,8 @@ def switch_to_user(p_fab_api,
 	p_fab_api.env.password = pass_str
 #---------------------------------------------------
 def switch_and_prompt_to_user(p_node_phys_lst,
-					p_fab_api,
-					p_log_fun):
+			p_fab_api,
+			p_log_fun):
 	p_log_fun('FUN_ENTER','gf_fabric_utils.switch_and_prompt_to_user()')
 	assert isinstance(p_node_phys_lst,list)
 	
@@ -125,10 +123,10 @@ def switch_and_prompt_to_user(p_node_phys_lst,
 	pass_str = getpass.getpass()
 	
 	switch_fab_to_user(p_node_phys_lst,
-				user_str,
-				pass_str,
-				p_fab_api,
-				p_log_fun)
+			user_str,
+			pass_str,
+			p_fab_api,
+			p_log_fun)
 #---------------------------------------------------
 #all local
 
@@ -182,7 +180,6 @@ def run_remote_background_process(p_fab_api,
 	p_log_fun('FUN_ENTER','gf_fabric_utils.run_remote_background_process()')
 	p_log_fun('INFO'     ,'p_command_to_run:%s'%(p_command_to_run))
 	
-
 	cuisine.dir_ensure(os.path.dirname(p_out_file),recursive=True)
 	cuisine.file_ensure(p_out_file)
 
@@ -197,8 +194,8 @@ def run_remote_background_process(p_fab_api,
 	#streams stdout/stderr to the out_file/err_file
 	
 	command_str = 'nohup %s >%s 2>%s </dev/null &' % (p_command_to_run, 
-									p_out_file, 
-									p_err_file or '&1')
+							p_out_file, 
+							p_err_file or '&1')
 	out = p_fab_api.run(command_str, 
 				p_shell, 
 				p_pty)
@@ -217,17 +214,17 @@ def setup_user(p_user_name_str,
 			passwd = p_user_pass_str)
 #-------------------------------------------------------------
 def set_ownergroup_and_readexec_privilages_on_dir(p_user_name_str,
-									p_group_name_str,
-									p_remote_dir_path_str,
-									p_fab_api,
-									p_log_fun):
+						p_group_name_str,
+						p_remote_dir_path_str,
+						p_fab_api,
+						p_log_fun):
 	p_log_fun('FUN_ENTER','gf_fabric_utils.set_ownergroup_and_readexec_privilages_on_dir()')
 	
 	#updating of code files happens as "root" user, so here we have to set privilages for the 
 	#actual user which will read the files
 	p_fab_api.run('chown -R %s:%s %s'%(p_user_name_str,
-									   p_group_name_str,
-									   p_remote_dir_path_str))
+					p_group_name_str,
+					p_remote_dir_path_str))
 	p_fab_api.run('chmod a-rwx -R %s'%(p_remote_dir_path_str)) #first remove all privilages for everyone
 	p_fab_api.run('chmod u+rx -R %s'%(p_remote_dir_path_str))  #then add readexecut-only privilages only for the owner
 #-------------------------------------------------------------
@@ -241,7 +238,7 @@ def set_ownergroup_and_readexec_privilages_on_file(p_user_name_str,
 	#updating of code files happens as "root" user, so here we have to set privilages for the 
 	#actual user which will read the files
 	p_fab_api.run('chown %s:%s %s'%(p_user_name_str,
-								    p_group_name_str,
-								    p_remote_file_path_str))
+						p_group_name_str,
+						p_remote_file_path_str))
 	p_fab_api.run('chmod a-rwx %s'%(p_remote_file_path_str)) #first remove all privilages for everyone
 	p_fab_api.run('chmod u+rx %s'%(p_remote_file_path_str))  #then add readexecut-only privilages only for the owner

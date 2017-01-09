@@ -49,7 +49,7 @@ def get_run_cmd(p_container_name_str,
 		assert isinstance(p_docker_volumes_lst,list)
 		for host_path_str,container_path_str in p_docker_volumes_lst:
 			a = '-v %s:%s'%(host_path_str,
-							container_path_str)
+					container_path_str)
 			cmd_lst.append(a)
 	#-------------
 	#PORTS
@@ -107,11 +107,11 @@ def create_swarm_cluster(p_fab_api,
 	return cluster_id_str
 #---------------------------------------------------
 def db_create__swarm_cluster_info(p_cluster_name_str,
-			p_swarm_cluster_id_str,
-			p_db_context_map,
-			p_log_fun,
-			p_db_name_str   = 'gf_ops',
-			p_coll_name_str = 'swarm_cluster_info'):
+		p_swarm_cluster_id_str,
+		p_db_context_map,
+		p_log_fun,
+		p_db_name_str   = 'gf_ops',
+		p_coll_name_str = 'swarm_cluster_info'):
 	p_log_fun('FUN_ENTER','gf_swarm.boostrap().db_create__swarm_cluster_info()')
 	assert  isinstance(p_swarm_cluster_id_str,basestring)
 
@@ -190,8 +190,8 @@ def view_swarm_info__remote(p_master__node_phy_adt,
 		p_log_fun('FUN_ENTER','gf_swarm.view_swarm_info__remote().task()')
 	
 		swarm_cluster_info_map = db_get__swarm_cluster_info(p_cluster_name_str,
-									p_db_context_map,
-									p_log_fun)
+								p_db_context_map,
+								p_log_fun)
 		assert isinstance(swarm_cluster_info_map,dict)
 		swarm_cluster_id_str = swarm_cluster_info_map['swarm_cluster_id_str']
 

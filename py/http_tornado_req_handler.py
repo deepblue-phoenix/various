@@ -50,7 +50,6 @@ def request_wrapper(p_handler_adt,          #:Handler_adt
 					p_log_fun)
 		return 
 		#-----------------------
-		
 	try:
 		#--------
 		#GET HTTP REQUEST ARGS
@@ -87,8 +86,8 @@ def request_wrapper(p_handler_adt,          #:Handler_adt
 		#Like other headers, cookies must be sent before any output from your script (this is a protocol restriction).
 		
 		session_id_str = http_tornado_session.get_session_id(p_tornado_handler_self,
-										p_db_context_map,
-										p_log_fun)
+								p_db_context_map,
+								p_log_fun)
 		#the extracted session_id is appended to request arguments, so that the user has access to it
 		req_args_map['session_id_str'] = session_id_str
 		session_info_map               = http_tornado_session.get_session_info(session_id_str,
@@ -208,7 +207,7 @@ def handle_redirect(p_usr_handler_result_tpl,
 		assert isinstance(args_map,dict)
 		
 		servers_info_lst = gf_rpc_server_discovery.get_server_info(server_name,
-											p_log_fun)
+									p_log_fun)
 		
 		#FIX!! - there is no load balancing here in case multiple server info's 
 		#        are returned in servers_info_lst, or any kind of performance check 
@@ -219,10 +218,10 @@ def handle_redirect(p_usr_handler_result_tpl,
 		
 		args_str  = urllib.urlencode(args_map)
 		final_url = '%s:%s/%s/%s?%s'%(server_info_map['host'],
-						server_info_map['port'],
-						module_name,
-						fun_name,
-						args_str)
+					server_info_map['port'],
+					module_name,
+					fun_name,
+					args_str)
 		
 		p_tornado_handler_self.redirect(final_url)
 #----------------------------------------------

@@ -27,8 +27,8 @@ def init_js(p_qt_web_page,
 			p_verbose_bool = p_verbose_bool)
 #-------------------------------------------------
 def init_js_sys_event_handlers(p_qt_web_page,
-				p_log_fun,
-				p_verbose_bool = False):
+			p_log_fun,
+			p_verbose_bool = False):
 	if p_verbose_bool: p_log_fun('FUN_ENTER','gf_test_web_init_js.init_js_sys_event_handlers()')
 	
 	#-------------------------------------------------	
@@ -37,8 +37,8 @@ def init_js_sys_event_handlers(p_qt_web_page,
 	#-------------------------------------------------
 	def js_console_msg_handler(p_message, p_line, p_sourceid):
 		msg = 'JS_CONSOLE - line:%s - %s - %s'%(p_line,
-								p_sourceid,
-								p_message)
+						p_sourceid,
+						p_message)
 		p_log_fun('ERROR',msg)
 	#-------------------------------------------------
 	def js_confirm_handler(webframe, message):

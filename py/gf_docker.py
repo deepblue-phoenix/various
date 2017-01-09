@@ -182,7 +182,7 @@ def config_remote__docker_deamon(p_fab_api,
 		#store Docker startup options, for the docker deamon to pick up on its startup (when the node boots up)
 		#IMPORTANT!! - '\\"' - in python to escape '"' you have to use a double slash '\\'
 		s = r'''echo DOCKER_OPTS=\\"%s\\" >> %s'''%(deamon_startup_options_str,
-								p_docker_config_path_str)
+						p_docker_config_path_str)
 
 		p_fab_api.run('service docker stop') #docker is running by default
 		p_fab_api.run(s)

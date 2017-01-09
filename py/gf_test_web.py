@@ -106,13 +106,13 @@ def run_bundle_in_separate_process(p_test_bundle_adt,
 	
 	#:multiprocessing.Process
 	server_process = multiprocessing.Process(target = run_bundle_process, 
-							args = (p_test_bundle_adt,
-							p_onWebRequest_user_fun,
-							p_onWebResponse_user_fun,
-							p_verbose_bool,
-							p_io_context_map,
-							child_conn,
-							p_log_fun))
+					args = (p_test_bundle_adt,
+					p_onWebRequest_user_fun,
+					p_onWebResponse_user_fun,
+					p_verbose_bool,
+					p_io_context_map,
+					child_conn,
+					p_log_fun))
 	server_process.start()
 	
 	#waiting for run_bundle_proces() (separate OS process) to send a 
@@ -145,10 +145,10 @@ def run_bundle(p_test_bundle_adt,
 	#REQUEST FILTERING
 	
 	filter_context_map = gf_test_web_net_filter.get_filter_context(p_io_context_map,
-											p_log_fun,
-											p_verbose_bool           = p_verbose_bool,
-											p_onWebRequest_user_fun  = p_onWebRequest_user_fun,
-											p_onWebResponse_user_fun = p_onWebResponse_user_fun)
+									p_log_fun,
+									p_verbose_bool           = p_verbose_bool,
+									p_onWebRequest_user_fun  = p_onWebRequest_user_fun,
+									p_onWebResponse_user_fun = p_onWebResponse_user_fun)
 	assert isinstance(filter_context_map,dict)
 	
 	on_net_mngr_request_handler_fun = filter_context_map['on_net_mngr_request_handler_fun']
@@ -223,16 +223,16 @@ def init_page_and_run_bundle(p_test_bundle_adt,
 	#-------------------------------------------------
 	#->:Bool(allow_bool)
 	def on_net_mngr_request_handler_fun(p_url,
-						p_operation,
-						p_qt_net_request,
-						p_data):
+					p_operation,
+					p_qt_net_request,
+					p_data):
 		if p_verbose_bool: p_log_fun('FUN_ENTER','gf_test_web.run_bundle().on_net_mngr_request_handler_fun()')
 		p_log_fun('EXTERN','p_url:%s'%(p_url))
 
 		allow_bool = p_on_net_mngr_request_handler_fun(p_url,
-									p_operation,
-									p_qt_net_request,
-									p_log_fun)
+							p_operation,
+							p_qt_net_request,
+							p_log_fun)
 		assert isinstance(allow_bool,bool)
 		
 		return allow_bool
@@ -289,9 +289,9 @@ def init_page_and_run_bundle(p_test_bundle_adt,
 		#--------------------------
 		
 		gf_test_web_utils.inject_scripts_into_page(scripts_to_inject_paths_lst,
-									qt_frame,
-									p_log_fun,
-									p_verbose_bool = p_verbose_bool)
+						qt_frame,
+						p_log_fun,
+						p_verbose_bool = p_verbose_bool)
 
 		tests_run_info_map = run_bundle_tests(p_test_bundle_adt,
 						async_callbacks_tracker_map,
@@ -355,8 +355,8 @@ def run_bundle_tests(p_test_bundle_adt,
 		
 		#->:Any
 		def eval_async_js_fun(p_script_code_str,
-					p_callback_id,
-					p_timeout_seconds = 3):
+				p_callback_id,
+				p_timeout_seconds = 3):
 			if p_verbose_bool: p_log_fun('FUN_ENTER','gf_test_web.run_page_tests().eval_async_js_fun()')
 			assert isinstance(p_callback_id    ,basestring)
 			assert isinstance(p_timeout_seconds,int)
@@ -375,36 +375,36 @@ def run_bundle_tests(p_test_bundle_adt,
 			if p_verbose_bool: p_log_fun('FUN_ENTER','gf_test_web.run_bundle_tests().eval_sync_js_fun()')
 			
 			return gf_test_web_utils.eval_sync_js_fun(p_script_code_str,
-									qt_page_frame,
-									p_log_fun,
-									p_verbose_bool = p_verbose_bool)
+								qt_page_frame,
+								p_log_fun,
+								p_verbose_bool = p_verbose_bool)
 		#-------------------------------------------------
 		def inject_script_fun(p_script_path):
 			if p_verbose_bool: p_log_fun('FUN_ENTER','gf_test_web.run_bundle_tests().inject_script_fun()')
 			gf_test_web_utils.inject_scripts_into_page([p_script_path],
-									qt_page_frame,
-									p_log_fun,
-									p_verbose_bool = p_verbose_bool)
+								qt_page_frame,
+								p_log_fun,
+								p_verbose_bool = p_verbose_bool)
 		#-------------------------------------------------
 		def pause_event_loop_fun(p_seconds):
 			if p_verbose_bool: p_log_fun('FUN_ENTER','gf_test_web.run_bundle_tests().pause_event_loop_fun()')
 			gf_test_web_utils.pause_event_loop_fun(p_seconds,
-								p_qt_app,
-								p_log_fun,
-								p_verbose_bool = p_verbose_bool)
+							p_qt_app,
+							p_log_fun,
+							p_verbose_bool = p_verbose_bool)
 		#-------------------------------------------------	
 		def scroll_page_fun(p_horizontal_pixels_num_to_scroll):
 			if p_verbose_bool: p_log_fun('FUN_ENTER','gf_test_web.run_bundle_tests().scroll_page_fun()')
 			gf_test_web_utils.scroll_page(p_horizontal_pixels_num_to_scroll,
-							qt_page_frame,
-							p_log_fun,
-							p_verbose_bool = p_verbose_bool)
+						qt_page_frame,
+						p_log_fun,
+						p_verbose_bool = p_verbose_bool)
 		#-------------------------------------------------	
 		def history_go_back_fun():
 			if p_verbose_bool: p_log_fun('FUN_ENTER','gf_test_web.run_bundle_tests().history_go_back()')
 			gf_test_web_utils.history_go_back(p_qt_webpage,
-								p_log_fun,
-								p_verbose_bool = p_verbose_bool)
+							p_log_fun,
+							p_verbose_bool = p_verbose_bool)
 		#-------------------------------------------------	
 		web_funs_map = {
 			'eval_async_js_fun'   :eval_async_js_fun,
@@ -489,7 +489,6 @@ def run_single_test(p_test_info_map,
 		if p_verbose_bool: p_log_fun('FUN_ENTER','gf_test_web.run_single_test().run_test_fun()')
 		
 		try:
-			
 			#:Any|:None
 			output = test_fun(p_web_funs_map,
 					p_assert_funs_map,
@@ -521,12 +520,12 @@ def run_single_test(p_test_info_map,
 	#-------------------------------------------------
 
 	test_run_info_map = gf_test_web_render.with_screenshots(test_name,
-									run_test_fun,
-									p_test_info_map,
-									p_qt_webpage,
-									p_qt_app,
-									p_log_fun,
-									p_verbose_bool = p_verbose_bool)
+							run_test_fun,
+							p_test_info_map,
+							p_qt_webpage,
+							p_qt_app,
+							p_log_fun,
+							p_verbose_bool = p_verbose_bool)
 	assert isinstance(test_run_info_map,dict)
 	
 	return test_run_info_map

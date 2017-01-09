@@ -79,9 +79,9 @@ def set_net_mngr_event_handlers(p_qt_net_mngr,
 		#if its False then the request is droped and not sent out
 		#if its True the request is repassed to QtNetworkManager
 		user_handler_status = p_on_request_handler_fun(url,
-								operation,
-								p_request,
-								p_data)
+							operation,
+							p_request,
+							p_data)
 		assert isinstance(user_handler_status,bool)
 		
 		if p_verbose_bool:
@@ -102,16 +102,16 @@ def set_net_mngr_event_handlers(p_qt_net_mngr,
 			
 			#:PySide.QtNetwork.QNetworkReply
 			reply = QtNetwork.QNetworkAccessManager.createRequest(p_qt_net_mngr,
-										p_operation, 
-										p_request, 
-										p_data)
+									p_operation, 
+									p_request, 
+									p_data)
 			return reply
 		else:
 			#:PySide.QtNetwork.QNetworkReply
 			reply = QtNetwork.QNetworkAccessManager.createRequest(p_qt_net_mngr,
-										p_operation, 
-										p_request, 
-										p_data)
+									p_operation, 
+									p_request, 
+									p_data)
 			return reply
 	#-------------------------------------------------
 	def onSslErrors(p_q_net_request):

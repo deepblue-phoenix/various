@@ -38,15 +38,13 @@ def start_sharding_cluster(p_name_str,
 			assert isinstance(server_info_map,dict)
 
 			server_runtime_info_map = None
-
 			#------------
 			#CONFIG 
-
 			if p_type_str == 'config_server':
 				server_runtime_info_map = start_server(server_info_map,
-									p_type_str,
-									run_cmd_fun,
-									p_log_fun)
+								p_type_str,
+								run_cmd_fun,
+								p_log_fun)
 			#------------
 			#SHARD ROUTER
 
@@ -64,18 +62,18 @@ def start_sharding_cluster(p_name_str,
 				config_servers_runtime_infos_map = keyup_config_servers_runtime_infos()
 
 				server_runtime_info_map = start_server(server_info_map,
-									p_type_str,
-									run_cmd_fun,
-									p_log_fun,
-									p_config_servers_runtime_infos_map = config_servers_runtime_infos_map)
+								p_type_str,
+								run_cmd_fun,
+								p_log_fun,
+								p_config_servers_runtime_infos_map = config_servers_runtime_infos_map)
 			#------------
 			#SHARD
 
 			elif p_type_str == 'shard_server':
 				server_runtime_info_map = start_server(server_info_map,
-									p_type_str,
-									run_cmd_fun,
-									p_log_fun)
+								p_type_str,
+								run_cmd_fun,
+								p_log_fun)
 			#------------
 			servers_runtime_infos_lst.append(server_runtime_info_map)
 
@@ -93,11 +91,10 @@ def start_sharding_cluster(p_name_str,
 	#MAIN
 
 	config_servers_runtime_infos_lst = start_servers(p_config_servers_static_infos_lst,
-										'config_server')
+							'config_server')
 	shard_router_servers_runtime_infos_lst = start_servers(p_shard_router_servers_static_infos_lst,
-								'shard_router_server',
-								p_config_servers_runtime_infos_lst = config_servers_runtime_infos_lst)
-
+							'shard_router_server',
+							p_config_servers_runtime_infos_lst = config_servers_runtime_infos_lst)
 
 	shard_servers_runtime_infos_lst = start_servers(p_shard_servers_static_infos_lst,
 							'shard_server')
@@ -161,22 +158,22 @@ def start_server(p_server_info_map,
 		assert isinstance(p_config_servers_runtime_infos_map,dict)
 
 		server_runtime_info_map = start_shard_router_server(name_str,
-										host_str,
-										port_str,
-										p_config_servers_runtime_infos_map,
-										log_file_path_str,
-										p_run_cmd_fun,
-										p_log_fun)
+								host_str,
+								port_str,
+								p_config_servers_runtime_infos_map,
+								log_file_path_str,
+								p_run_cmd_fun,
+								p_log_fun)
 		assert isinstance(server_runtime_info_map,dict)	
 	#--------------
 	elif p_type_str == 'shard_server':
 		server_runtime_info_map = gf_db_mongodb.start_db_server(name_str,
-										data_dir_path_str, #p_db_server_data_dir_path_str,
-										log_file_path_str,
-										p_run_cmd_fun,
-										p_log_fun,
-										p_host_str = host_str,
-										p_port_str = port_str)		
+								data_dir_path_str, #p_db_server_data_dir_path_str,
+								log_file_path_str,
+								p_run_cmd_fun,
+								p_log_fun,
+								p_host_str = host_str,
+								p_port_str = port_str)		
 		assert isinstance(server_runtime_info_map,dict)
 	#--------------
 
@@ -246,7 +243,7 @@ def start_shard_router_server(p_name_str,
 	#              not deamon
 	#startup_process_pid_int = resulst_map['pid_int']
 	deamon_pid_int = gf_db_mongodb.get_forked_deamon_pid_from_std_out(std_out_str,
-										p_log_fun)
+								p_log_fun)
 	assert isinstance(deamon_pid_int,int)
 	#-------
 
@@ -309,8 +306,8 @@ def add_shard_to_cluster(p_shard_router_runtime_info_map,
 
 
 	cmd_str = '''mongo --host %s --port %s --eval "%s"'''%(shard_router_host_str,
-											shard_router_port_str,
-											mongo_js_command_str)
+								shard_router_port_str,
+								mongo_js_command_str)
 
 	result_map = p_run_cmd_fun(cmd_str)
 	assert isinstance(result_map,dict)

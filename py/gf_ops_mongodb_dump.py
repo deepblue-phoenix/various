@@ -23,8 +23,8 @@ def get_remote_db_dump(p_target_node_phys_lst,
 			
 		current_datetime_str         = datetime.datetime.now().isoformat()
 		remote_db_dump_file_path_str = '%s/db_dump.txt+%s+%s'%(meta_props_map['remote_db_data_root_dir_path_str'],
-										current_datetime_str,
-										current_host_str)
+								current_datetime_str,
+								current_host_str)
 		#------------
 		#DOWNLOAD DB DUMP FILE
 
@@ -40,7 +40,7 @@ def get_remote_db_dump(p_target_node_phys_lst,
 		cuisine.file_is_file(remote_gf_data_tool_py_module_path_str)
 		
 		remote_command_str = 'python %s %s'%(remote_gf_data_tool_py_module_path_str,
-								args_str)
+						args_str)
 		
 		p_fab_api.run(remote_command_str)
 		p_fab_api.get(remote_db_dump_file_path_str,
@@ -48,7 +48,7 @@ def get_remote_db_dump(p_target_node_phys_lst,
 		#------------
 		
 		local_db_dump_file_path_str = '%s/%s'%(meta_props_map['local_db_data_root_dir_path_str'],
-										os.path.basename(remote_db_dump_file_path_str))
+								os.path.basename(remote_db_dump_file_path_str))
 		
 		
 		results_per_host_map[current_host_str] = {
@@ -67,14 +67,14 @@ def get_remote_db_dump(p_target_node_phys_lst,
 #-------------------------------------------------------------
 #->:Dict
 def get_latest_date_archived_db_dumps(p_local_db_data_root_dir_path_str,
-						p_log_fun):
+				p_log_fun):
 	p_log_fun('FUN_ENTER','gf_ops_data_dump.get_latest_date_archived_db_dumps()')
 
 	#:List<:Dict>
 	db_dumps_infos_lst = list_all_archived_remote_db_dumps(p_local_db_data_root_dir_path_str,
-									p_log_fun,
-									p_count_dump_file_lines_bool = False,
-									p_vis_bool                   = False)
+							p_log_fun,
+							p_count_dump_file_lines_bool = False,
+							p_vis_bool                   = False)
 	assert isinstance(db_dumps_infos_lst,list)
 	assert len(db_dumps_infos_lst) > 0
 
@@ -99,8 +99,8 @@ def get_latest_date_archived_db_dumps(p_local_db_data_root_dir_path_str,
 
 		#sort all dumps (per node) by date
 		sorted_by_date_lst = sorted(dumps_lst,
-						key     = lambda p_dump_info_map:p_dump_info_map['dump_creation_date_str'],
-						reverse = True)
+					key     = lambda p_dump_info_map:p_dump_info_map['dump_creation_date_str'],
+					reverse = True)
 		latest_dump_map = sorted_by_date_lst[0]
 
 		assert isinstance(latest_dump_map,dict)
